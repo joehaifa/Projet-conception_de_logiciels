@@ -1,7 +1,5 @@
 # Projet-conception_de_logiciels
-Voici une suggestion de contenu pour le fichier **README.md** de ton projet **Gym Management System** que tu peux mettre sur GitHub :
 
----
 
 # Gym Management System
 
