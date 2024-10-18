@@ -19,7 +19,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -611,7 +610,7 @@ public class CustomerPage extends VBox {
 
     private void add() {
         getCustomerData();
-        GymData.retrieveAllEmployees();
+
 
         String id = tfId.getText();
         String fname = tfFname.getText();
@@ -651,10 +650,7 @@ public class CustomerPage extends VBox {
             foundError = true;
             txtIdRequiredError.setFill(Color.RED);
         }
-        if (GymData.searchIdCustomersAndEmployees(id, gymData)) {
-            foundError = true;
-            txtIdExistingError.setFill(Color.RED);//
-        }
+
 
         if (fname.equals("")) {
             foundError = true;

@@ -8,20 +8,41 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class GymData {
-
-
+    private ArrayList<LogIn> logins;
+    private ArrayList<Employee> employees;
     private ArrayList<Customer> customers;
+    private ArrayList<Appointment> appointments;
 
     public GymData()
     {
+        this.logins = new ArrayList<LogIn>();
+        this.employees = new ArrayList<Employee>();
+        this.customers = new ArrayList<Customer>();
+        this.appointments = new ArrayList<Appointment>();
     }
+
+
+
+    public ArrayList<LogIn> getLogins() { return this.logins; }
 
     public ArrayList<Customer> getCustomers()
     {
         return this.customers;
     }
 
+
+
+    public void setLogins(ArrayList<LogIn> logins)
+    {
+        this.logins = logins;
+    }
     public void setCustomers(ArrayList<Customer> customers) { this.customers = customers; }
+
+
+
+
+
+
 
     public static boolean searchIdCustomers(String id, GymData gymData)
     {
@@ -30,6 +51,45 @@ public class GymData {
                 return true;
         return false;
     }
+
+
+
+
+
+
+    public static ArrayList<LogIn> retrieveAllLogIns()
+    {
+        System.out.println("Retrieving logins...");
+        ArrayList<LogIn> logins = new ArrayList<LogIn>();
+
+
+        try
+        {
+            String url = "jdbc:mysql://localhost:3306/gymdb";
+            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM login");
+
+            while (rs.next())
+            {
+                logins.add(new LogIn(rs.getString(1), rs.getString(2), rs.getString(3)));
+            }
+            System.out.println(logins.get(0));
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        }
+        catch (Exception exc)
+        {
+
+            GymData.catchExceptions("Exception during login retrieval: " + exc.getMessage());
+            exc.printStackTrace();
+        }
+        return logins;
+    }
+
+
 
 
     public static ArrayList<Customer> retrieveAllCustomers()
@@ -148,20 +208,9 @@ public class GymData {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     public static void catchExceptions(String message)
     {
-        try(PrintWriter output = new PrintWriter(new File("C:\\Users\\User\\Desktop\\final project prog\\errors\\errors.txt")))
+        try(PrintWriter output = new PrintWriter(new File("file:C:\\Users\\User\\Desktop\\final project prog\\errors\\errors.txt")))
         {
             output.append(message);
         }
@@ -171,6 +220,7 @@ public class GymData {
             exc.printStackTrace();
         }
     }
+
 
 
 
