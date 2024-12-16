@@ -35,7 +35,7 @@ public class LogInPage extends StackPane {
 
 
         // Create a background image
-        Image bg1 = new Image("file:///C:\\Users\\User\\Desktop\\final project prog\\images\\background.jpg");
+        Image bg1 = new Image("file:///C:\\Users\\user\\Desktop\\final project prog\\final project prog\\images\\background.jpg");
         BackgroundImage background = new BackgroundImage(bg1,
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
@@ -50,7 +50,7 @@ public class LogInPage extends StackPane {
         gp.setVgap(20);
 
         // Create an image
-        Image ig1 = new Image("file:///C:\\Users\\User\\Desktop\\final project prog\\images\\logo.jpg");
+        Image ig1 = new Image("file:///C:\\Users\\user\\Desktop\\final project prog\\final project prog\\images\\logo.jpg");
         ImageView gym = new ImageView(ig1);
         gym.setFitWidth(137);
         gym.setFitHeight(137);
@@ -155,13 +155,13 @@ public class LogInPage extends StackPane {
         if(!foundError)
         {
             String username = this.username.getText();
-            String pass = this.password2.getText();
+            String pass = gymData.hashPassword(this.password2.getText());
             loginTrue = checkLogin(username, pass);
         }
 
         if(!loginTrue.equals("0"))
         {
-
+            GymApplication.changeSceneToApp(gymStage, loginTrue);
         }
     }
 
@@ -199,21 +199,19 @@ public class LogInPage extends StackPane {
     }
 
 
-    public String checkLogin(String username, String pass)
-    {
+    public String checkLogin(String username, String pass) {
         gymData.setLogins(GymData.retrieveAllLogIns());
 
-        for(LogIn login : gymData.getLogins())
-        {
-            if (username.equals(login.getUsername()) && pass.equals(login.getPassword()))
-            {
+
+        for (LogIn login : gymData.getLogins()) {
+            if (username.equals(login.getUsername()) && pass.equals(login.getPassword())) {
                 return login.getId();
             }
         }
 
-        this.username.setStyle("-fx-border-color: red;-fx-border-radius: 9px;-fx-background-radius: 9;-fx-border-width: 2px;-fx-background-radius: 9;-fx-background-color: lightgrey;");
-        this.password.setStyle("-fx-border-color: red;-fx-border-radius: 9px;-fx-background-radius: 9;-fx-border-width: 2px;-fx-background-radius: 9;-fx-background-color: lightgrey;");
-        this.password2.setStyle("-fx-border-color: red;-fx-border-radius: 9px;-fx-background-radius: 9;-fx-border-width: 2px;-fx-background-radius: 9;-fx-background-color: lightgrey;");
+        this.username.setStyle("-fx-border-color: red; -fx-border-radius: 9px; -fx-background-color: lightgrey;");
+        this.password.setStyle("-fx-border-color: red; -fx-border-radius: 9px; -fx-background-color: lightgrey;");
+        this.password2.setStyle("-fx-border-color: red; -fx-border-radius: 9px; -fx-background-color: lightgrey;");
         return "0";
     }
 
