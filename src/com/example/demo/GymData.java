@@ -9,8 +9,14 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+
 
 public class GymData {
+    static String url ;
+    static String username ;
+    static String  password ;
     private ArrayList<LogIn> logins;
     private ArrayList<Employee> employees;
     private ArrayList<Customer> customers;
@@ -22,6 +28,8 @@ public class GymData {
         this.employees = new ArrayList<Employee>();
         this.customers = new ArrayList<Customer>();
         this.appointments = new ArrayList<Appointment>();
+        getSettingsInfo();
+
     }
 
 
@@ -92,15 +100,17 @@ public class GymData {
 
 
     public static ArrayList<LogIn> retrieveAllLogIns()
-    {
+    {   System.out.print(url);
+        System.out.println(username);
+        System.out.println(password);
         System.out.println("Retrieving logins...");
         ArrayList<LogIn> logins = new ArrayList<LogIn>();
 
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM login");
 
@@ -124,18 +134,18 @@ public class GymData {
     }
 
 
-    public static void addLogIn(String username, String password)
+    public static void addLogIn(String user, String pass)
     {
         System.out.println("Adding login...");
 
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
-            String query = "INSERT INTO login (login_un, login_pass) VALUES ('" + username + "', '" + password + "')";
+            String query = "INSERT INTO login (login_un, login_pass) VALUES ('" + user + "', '" + pass + "')";
             stmt.executeUpdate(query);
 
             stmt.close();
@@ -149,18 +159,18 @@ public class GymData {
     }
 
 
-    public static void updateLogIn(String id, String username, String password)
+    public static void updateLogIn(String id, String user, String pass)
     {
         System.out.println("Updating login...");
 
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
-            String query = "UPDATE login SET login_un = '" + username + "', login_pass = '" + password + "' WHERE login_id = " + id;
+            String query = "UPDATE login SET login_un = '" + user + "', login_pass = '" + pass + "' WHERE login_id = " + id;
             stmt.executeUpdate(query);
 
             stmt.close();
@@ -182,8 +192,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
             String query = "DELETE FROM login WHERE login_id =" + id;
@@ -225,8 +235,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM customer");
 
@@ -259,12 +269,12 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
             String query = "INSERT INTO customer (cust_id, cust_fname, cust_lname, cust_pn, cust_email, cust_yob, cust_start_date, cust_end_date)"
-                    + " VALUES ('" + id + "', '" + fname + "', '" + lname + "', '" + phoneNumber + "', '" + email + "', " + year
+                    + " VALUES ('" +"cust" +id + "', '" + fname + "', '" + lname + "', '" + phoneNumber + "', '" + email + "', " + year
                     + ", '" + Date.valueOf(startDate) + "', '" + Date.valueOf(endDate) + "');";
             stmt.executeUpdate(query);
 
@@ -286,8 +296,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
             String query = "UPDATE customer SET cust_fname = '" +  fname +"', cust_lname = '" + lname + "', cust_pn = '" + phoneNumber + "', "
@@ -314,8 +324,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
             String query = "DELETE FROM customer WHERE cust_id = '" + id + "';";
@@ -363,8 +373,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM employee");
 
@@ -396,12 +406,12 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
             String query = "INSERT INTO employee (emp_id, emp_fname, emp_lname, emp_pn, emp_email, emp_yob, emp_post, emp_salary)"
-                    + " VALUES ('" + id + "', '" + fname + "', '" + lname + "', '" + phoneNumber + "', '" + email + "', " + year
+                    + " VALUES ('" + "emp"+ id + "', '" + fname + "', '" + lname + "', '" + phoneNumber + "', '" + email + "', " + year
                     + ", '" + post + "', " + salary + ");";
             stmt.executeUpdate(query);
 
@@ -424,8 +434,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
             String query = "UPDATE employee SET emp_fname = '" + fname + "', emp_lname = '" + lname + "', emp_pn = '" + phoneNumber + "', "
@@ -450,8 +460,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
             String query = "DELETE FROM employee WHERE emp_id = '" + id + "';";
@@ -506,8 +516,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT cust_id, cust_fname, cust_lname FROM customer "
                     + "WHERE cust_fname LIKE '%" + fname + "%' AND cust_lname LIKE '%" + lname + "%';");
@@ -545,8 +555,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT emp_id, emp_fname, emp_lname FROM employee "
                     + "WHERE emp_fname LIKE '%" + fname + "%' AND emp_lname LIKE '%" + lname + "%';");
@@ -582,8 +592,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM appointment");
 
@@ -612,8 +622,8 @@ public class GymData {
 
         try
         {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             Statement stmt = conn.createStatement();
 
             String query = "INSERT INTO appointment (app_cust_id, app_emp_id, app_date, app_time) " +
@@ -636,8 +646,8 @@ public class GymData {
         boolean exists = false;
 
         try {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             String query = "SELECT COUNT(*) FROM appointment WHERE app_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, appId);
@@ -659,8 +669,8 @@ public class GymData {
     }
     public static void deleteAppointment(String appId) {
         try {
-            String url = "jdbc:mysql://localhost:3306/gymdb";
-            Connection conn = DriverManager.getConnection(url, "root", "W@2915djkq#");
+
+            Connection conn = DriverManager.getConnection(url, username, password);
             String query = "DELETE FROM appointment WHERE app_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, appId);
@@ -739,6 +749,21 @@ public class GymData {
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
+        }
+    }
+    private void getSettingsInfo() {
+        try (Scanner scanner = new Scanner(new File("C:\\Users\\user\\Desktop\\final project prog\\final project prog\\settings\\settings.txt"))) {
+            if (scanner.hasNextLine()) {
+                url = scanner.nextLine();
+                username = scanner.hasNextLine() ? scanner.nextLine() : "";
+                password = scanner.hasNextLine() ? scanner.nextLine() : "";
+
+
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            GymData.catchExceptions(e.getMessage());
         }
     }
 
